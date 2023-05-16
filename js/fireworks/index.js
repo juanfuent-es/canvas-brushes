@@ -1,7 +1,7 @@
 import Canvas from "../lib/canvas.js";
 import Vector from "../math/vector.js"
 import Light from "./light.js"
-const GRAVITY = new Vector(0, .1)
+const GRAVITY = new Vector(0, .15)
 export default class Fireworks extends Canvas {
     constructor(_lights = 10) {
         super()
@@ -26,8 +26,12 @@ export default class Fireworks extends Canvas {
         this.background("rgba(0,0,0,0.1)")
         for (let i = 0; i < this.lights.length; i++) {
             const light = this.lights[i]
-            light.update(GRAVITY)
-            light.draw(this.context)
+            if (light.isLived) {
+                light.update(GRAVITY)
+                light.draw(this.context)
+            } else {
+
+            }
         }
     }
 }
