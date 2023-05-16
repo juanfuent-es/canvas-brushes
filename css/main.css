@@ -40,3 +40,9 @@ a {
 a:hover {
     font-weight: 500;
 }
+
+canvas {
+	position: absolute;
+	left: 0;
+	top: 0;
+}
