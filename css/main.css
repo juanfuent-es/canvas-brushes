@@ -1,0 +1,42 @@
+@font-face {
+	src: url('https://res.cloudinary.com/losrodriguez/raw/upload/v1670565861/Hubot-Sans_xy9zmr.woff2');
+	font-family:'Hubot Sans';
+	font-style: normal;
+}
+html {
+	height:100%;
+}
+body {
+	padding: 0;
+	margin: 0;
+	overflow: hidden;
+	background-color: #000;
+	color: #FFF;
+	display: flex;
+	justify-content: center;
+	height: 100%;
+	align-items: center;
+	font-family: 'Hubot Sans', sans-serif;
+}
+
+main {
+    max-width: 1280px;
+    width: 80%;
+    margin: 0 auto;
+}
+
+h1 {
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 60px;
+}
+
+a {
+    color: #FFF;
+    text-decoration: none;
+    text-transform: uppercase;
+}
+
+a:hover {
+    font-weight: 500;
+}
