@@ -1,18 +1,27 @@
-import Canvas from "../lib/canvas.js";
+import Canvas from "../lib/canvas.js"
 import Vector from "../math/vector.js"
+import Mouse from "../lib/mouse.js"
 import Light from "./light.js"
 const GRAVITY = new Vector(0, .15)
+const POINTER = new Mouse();
 export default class Fireworks extends Canvas {
-    constructor(_lights = 10) {
+    constructor(_lights = 3) {
         super()
+        this.total_lights = _lights
         this.lights = []
-        this.setup(_lights)
+        this.events()
         this.animate()
     }
 
-    setup(total_lights) {
-        for (let i = 0; i < total_lights; i++) {
-            const light = new Light()
+    events() {
+        const mouseMove = throttle(() => this.fire(), 80)
+        document.addEventListener('pointermove', mouseMove, false)
+    }
+
+    fire() {
+        if (!POINTER.pressed) return false
+        for (let i = 0; i < this.total_lights; i++) {
+            const light = new Light(POINTER.pos.x, POINTER.pos.y)
             this.lights.push(light)
         }
     }
@@ -29,9 +38,12 @@ export default class Fireworks extends Canvas {
             if (light.isLived) {
                 light.update(GRAVITY)
                 light.draw(this.context)
-            } else {
-
-            }
+            } else this.removeLight(light)
         }
+    }
+
+    removeLight(_light) {
+        const index = this.lights.indexOf(_light)
+        this.lights.splice(index, 1)
     }
 }

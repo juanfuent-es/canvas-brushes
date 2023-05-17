@@ -1,3 +1,4 @@
+const PX_RATIO = Math.min(window.devicePixelRatio, 2)
 export default class Canvas {
     constructor(containerId) {
         if (containerId === undefined) this.container = document.body
@@ -14,11 +15,10 @@ export default class Canvas {
     onResize() {
         this.width = window.innerWidth
         this.height = window.innerHeight
-        this.pxRatio = window.devicePixelRatio
         this.canvas.style.width = this.width + "px"
         this.canvas.style.height = this.height + "px"
-        this.canvas.width = this.width * this.pxRatio
-        this.canvas.height = this.height * this.pxRatio
+        this.canvas.width = this.width * PX_RATIO
+        this.canvas.height = this.height * PX_RATIO
         this.center = {
             x: this.canvas.width / 2,
             y: this.canvas.height / 2
