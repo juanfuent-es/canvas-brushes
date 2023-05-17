@@ -2,11 +2,16 @@ import Vector from "../math/vector.js"
 const PI_2 = Math.PI * 2
 
 export default class Light {
-    constructor(_x = innerWidth / 2, _y = innerHeight / 2) {
-        this.radio = Math.random() + 3
-        this.amp = Math.random() * 10
-        this.fillStyle = `rgb(255, ${this.channel()},0)`
-        this.pos = new Vector(_x, _y)
+    constructor(args = {}) {
+        this.x = args.x || innerWidth / 2
+        this.y = args.y || innerHeight / 2
+        this.radio = args.radio || Math.random()
+        this.amplitude = args.amplitude || 5
+        //
+        this.fillStyle = `rgba(255, 0, ${this.channel()},${Math.random() * .5})`
+        this.amp = Math.random() * this.amplitude
+        // forces
+        this.pos = new Vector(this.x, this.y)
         this.acc = new Vector(Math.random() * this.amp - (this.amp/2), - Math.random() * this.amp)
         this.vel = new Vector(0, 0)
     }
@@ -21,7 +26,7 @@ export default class Light {
         this.pos.addTo(this.vel)
         this.acc.multBy(0)
         //
-        this.radio -= .05
+        this.radio -= .035
     }
 
     draw(_ctx) {

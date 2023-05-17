@@ -8,7 +8,7 @@ export default class Mouse {
     }
 
     addEvents() {
-        const mouseMove = throttle(this.update.bind(this), 80)
+        const mouseMove = throttle(this.update.bind(this), 15)
         document.addEventListener('pointermove', mouseMove, false)
         document.addEventListener('pointerdown', () => {
             this.pressed = true

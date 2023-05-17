@@ -7,13 +7,17 @@
 	<link rel="stylesheet" href="css/main.css">
 </head>
 <body>
-	<main>
-		<h1>Fireworks</h1>
-	</main>
+	<h1>Fireworks</h1>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.7.5/dat.gui.min.js"></script>
 	<script src="static/vendor.js"></script>
 	<script type="module">
 		import Fireworks from "./js/fireworks/index.js"
-		const FIRE = new Fireworks(100)
+		const FIRE = new Fireworks(10)
+		const gui = new dat.GUI()
+		gui.add(FIRE, 'radio', 1, 10).step(1)
+		gui.add(FIRE, 'amplitude', 2, 20).step(1)
+		gui.add(FIRE, 'air', -1, 1).step(.05).onChange(FIRE.update.bind(FIRE))
+		gui.add(FIRE, 'gravity', -1, 1).step(.05).onChange(FIRE.update.bind(FIRE))
 	</script>
 </body>
 </html>
