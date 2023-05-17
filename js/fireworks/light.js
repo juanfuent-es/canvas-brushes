@@ -5,6 +5,7 @@ export default class Light {
     constructor(args = {}) {
         this.x = args.x || innerWidth / 2
         this.y = args.y || innerHeight / 2
+        this.died_steps = args.died_steps || 10
         this.radio = args.radio || Math.random()
         this.amplitude = args.amplitude || 5
         //
@@ -17,11 +18,13 @@ export default class Light {
     }
 
     setColors() {
-        let red = Math.random() > .5 ? 255 : 0
-        if (red == 0) {
-            this.fillStyle = `rgba(255, ${this.channel()}, ${this.channel()},${Math.random() * .5})`
+        let random = Math.random()
+        if (random > .66) {
+            this.fillStyle = `rgba(255, ${this.channel()}, 0,${Math.random() * .15})`
+        } else if (random > .33) {
+            this.fillStyle = `rgba(255, ${this.channel()}, ${this.channel()},${Math.random() * .15})`
         } else {
-            this.fillStyle = `rgba(${this.channel()}, 0, ${this.channel()},${Math.random() * .5})`
+            this.fillStyle = `rgba(${this.channel()}, 255, 0,${Math.random() * .15})`
         }
     }
 
@@ -35,7 +38,7 @@ export default class Light {
         this.pos.addTo(this.vel)
         this.acc.multBy(0)
         //
-        this.radio -= (this.radio / 30)
+        this.radio -= (this.radio / this.died_steps)
         // this.radio -= .035
     }
 

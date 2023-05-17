@@ -10,6 +10,7 @@ export default class Fireworks extends Canvas {
         this.gravity = .1
         this.radio = 3
         this.amplitude = 10
+        this.died_steps = 25
         //
         this.update()
         //
@@ -36,6 +37,7 @@ export default class Fireworks extends Canvas {
             const light = new Light({
                 x: POINTER.pos.x,
                 y: POINTER.pos.y,
+                died_steps: this.died_steps,
                 radio: Math.random() * this.radio,
                 amplitude: Math.random() * this.amplitude
             })
@@ -45,17 +47,20 @@ export default class Fireworks extends Canvas {
 
     animate() {
         requestAnimationFrame(() => this.animate())
-        this.render()
+        this.render(this.context)
     }
 
-    render() {
+    render(_ctx) {
+        _ctx.save()
         for (let i = 0; i < this.lights.length; i++) {
             const light = this.lights[i]
             if (light.isLived) {
                 light.update(this.force)
-                light.draw(this.context)
+                light.draw(_ctx)
+                _ctx.globalCompositeOperation = "lighter"
             } else this.removeLight(light)
         }
+        _ctx.restore()
     }
 
     removeLight(_light) {

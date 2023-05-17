@@ -19,6 +19,7 @@
 		gui.add(FIRE, 'amplitude', 2, 20).step(1)
 		gui.add(FIRE, 'air', -1, 1).step(.05).onChange(FIRE.update.bind(FIRE))
 		gui.add(FIRE, 'gravity', -1, 1).step(.05).onChange(FIRE.update.bind(FIRE))
+		gui.add(FIRE, 'died_steps', 10, 50).step(1)
 	</script>
 </body>
 </html>
