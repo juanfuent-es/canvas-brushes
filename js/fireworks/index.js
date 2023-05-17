@@ -26,6 +26,8 @@ export default class Fireworks extends Canvas {
     events() {
         const mouseMove = throttle(() => this.fire(), 15)
         document.addEventListener('pointermove', mouseMove, false)
+        document.addEventListener('keypress', () => this.clear(), false)
+        document.querySelector("#clean-btn").addEventListener('click', () => this.clear(), false)
     }
 
     fire() {

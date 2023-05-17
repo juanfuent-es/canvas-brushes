@@ -8,12 +8,21 @@ export default class Light {
         this.radio = args.radio || Math.random()
         this.amplitude = args.amplitude || 5
         //
-        this.fillStyle = `rgba(255, 0, ${this.channel()},${Math.random() * .5})`
+        this.setColors()
         this.amp = Math.random() * this.amplitude
         // forces
         this.pos = new Vector(this.x, this.y)
-        this.acc = new Vector(Math.random() * this.amp - (this.amp/2), - Math.random() * this.amp)
+        this.acc = new Vector(Math.random() * this.amp - (this.amp / 2), -Math.random() * this.amp)
         this.vel = new Vector(0, 0)
+    }
+
+    setColors() {
+        let red = Math.random() > .5 ? 255 : 0
+        if (red == 0) {
+            this.fillStyle = `rgba(255, ${this.channel()}, ${this.channel()},${Math.random() * .5})`
+        } else {
+            this.fillStyle = `rgba(${this.channel()}, 0, ${this.channel()},${Math.random() * .5})`
+        }
     }
 
     channel() {
@@ -26,7 +35,8 @@ export default class Light {
         this.pos.addTo(this.vel)
         this.acc.multBy(0)
         //
-        this.radio -= .035
+        this.radio -= (this.radio / 30)
+        // this.radio -= .035
     }
 
     draw(_ctx) {
