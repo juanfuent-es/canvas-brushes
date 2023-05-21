@@ -1,4 +1,6 @@
+import * as THREE from 'https://cdnjs.cloudflare.com/ajax/libs/three.js/0.152.2/three.module.js'
 import Aerosol from "./aerosol.js"
+
 const PX_RATIO = Math.min(window.devicePixelRatio, 1)
 
 export default class Airosol {
@@ -9,10 +11,38 @@ export default class Airosol {
             died_steps: 25,
             total_psts: 3
         })
+        this.aerosol.container.appendChild(this.aerosol.canvas)
         this.scene = new THREE.Scene()
-        this.camera = new THREE.PerspectiveCamera(10, this.aspectRatio, 10, 10000)
-        this.camera.position.z = 100
+        this.camera = new THREE.OrthographicCamera( - 1, 1, 1, - 1, 0, 1 )
+        this.setMesh()
         this.setRenderer()
+        this.events()
+        this.animate()
+    }
+
+    events() {
+        const onResizeHandler = debounce(() => this.resize(), 250)
+        window.addEventListener('resize', onResizeHandler, false)
+        this.resize()
+    }
+
+    setMesh() {
+        this.texture = new THREE.Texture(this.aerosol.canvas)
+        this.material = new THREE.ShaderMaterial({
+            vertexShader: document.getElementById( 'vertexShader' ).textContent,
+		    fragmentShader: document.getElementById( 'fragmentShader' ).textContent,
+            uniforms: {
+                uTime: {
+                    value: 1.0
+                },
+                uTexture: {
+                    value: this.texture
+                }
+            }
+        })
+        this.geometry = new THREE.PlaneGeometry(2, 2)
+        this.mesh = new THREE.Mesh(this.geometry, this.material)
+        this.scene.add(this.mesh)
     }
 
     setRenderer() {
@@ -25,10 +55,9 @@ export default class Airosol {
     }
 
     resize() {
+        this.aerosol.onResize()
+        this.aerosol.bg("#000")
         this.renderer.setSize(this.width, this.height)
-        this.camera.aspect = this.aspectRatio
-        this.camera.fov = this.fov
-        this.camera.updateProjectionMatrix()
     }
 
     animate() {
@@ -37,15 +66,11 @@ export default class Airosol {
     }
 
     render() {
+        this.renderer.render(this.scene, this.camera)
         this.aerosol.render(this.aerosol.context)
+        this.mesh.material.uniforms.uTexture.value.needsUpdate = true
     }
-    // getters
-    get fov() {
-        return 2 * Math.atan(this.width / this.aspectRatio / (2 * this.camera.position.z)) * (180 / Math.PI)
-    }
-    get aspectRatio() {
-        return this.width / this.height
-    }
+
     get width() {
         return window.innerWidth
     }

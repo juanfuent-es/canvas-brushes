@@ -8,7 +8,6 @@ const POINTER = new Mouse(THROTTLE)
 export default class Aerosol extends Canvas {
     constructor(args = {}) {
         super()
-        this.container.appendChild(this.canvas)
         // this.scale = 1
         // this.helper = new Canvas()
         // this.pixelated()

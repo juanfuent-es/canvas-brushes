@@ -24,7 +24,9 @@
 			died_steps: 25,
 			total_psts: 3
 		})
+        AERO.container.appendChild(AERO.canvas)
         AERO.animate()
+		//
 		const gui = new dat.GUI()
 		gui.add(AERO, 'radio', 10, 50).step(1)
 		gui.add(AERO, 'amplitude', 0, 4).step(.05)
