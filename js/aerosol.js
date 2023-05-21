@@ -1,7 +1,7 @@
-import Canvas from "../lib/canvas.js"
-import Vector from "../math/vector.js"
-import Mouse from "../lib/mouse.js"
-import Psst from "./../fireworks/psst.js"
+import Canvas from "./lib/canvas.js"
+import Vector from "./math/vector.js"
+import Mouse from "./lib/mouse.js"
+import Psst from "./fireworks/psst.js"
 const THROTTLE = 20 //ms
 const POINTER = new Mouse(THROTTLE)
 
@@ -21,7 +21,6 @@ export default class Aerosol extends Canvas {
         this.pssts = []
         this.composite = "hard-light"
         this.mouseEvents()
-        this.animate()
     }
 
     // onResize() {

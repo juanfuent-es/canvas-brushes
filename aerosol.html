@@ -17,13 +17,14 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.7.5/dat.gui.min.js"></script>
 	<script src="static/vendor.js"></script>
 	<script type="module">
-		import Aerosol from "./js/aerosol/index.js"
+		import Aerosol from "./js/aerosol.js"
 		const AERO = new Aerosol({
 			radio: 35,
 			amplitude: .42,
 			died_steps: 25,
 			total_psts: 3
 		})
+        AERO.animate()
 		const gui = new dat.GUI()
 		gui.add(AERO, 'radio', 10, 50).step(1)
 		gui.add(AERO, 'amplitude', 0, 4).step(.05)
