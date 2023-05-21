@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Aerosol | JuanFuent.es</title>
+	<meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+	<button id="clean-btn">Press any key to clean</button>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.7.5/dat.gui.min.js"></script>
+	<script src="static/vendor.js"></script>
+	<script type="module">
+		import Aerosol from "./js/aerosol/index.js"
+		const AERO = new Aerosol(10)
+		const gui = new dat.GUI()
+		gui.add(AERO, 'radio', 10, 50).step(1)
+		gui.add(AERO, 'amplitude', 2, 10).step(1)
+		gui.add(AERO, 'gravity', .1, .2).step(.01).onChange(AERO.update.bind(AERO))
+		gui.add(AERO, 'died_steps', 10, 50).step(1)
+		gui.add(AERO, 'total_lights', 5, 30).step(1)
+	</script>
+</body>
+</html>

@@ -1,16 +1,17 @@
 import Canvas from "../lib/canvas.js"
 import Vector from "../math/vector.js"
 import Mouse from "../lib/mouse.js"
-import Light from "./light.js"
-const POINTER = new Mouse()
-export default class Fireworks extends Canvas {
+import Light from "./../fireworks/light.js"
+const THROTTLE = 15 //ms
+const POINTER = new Mouse(THROTTLE)
+
+export default class Aerosol extends Canvas {
     constructor(_lights = 3) {
         super()
-        this.air = 0
         this.gravity = .1
-        this.radio = 3
-        this.amplitude = 10
-        this.died_steps = 25
+        this.radio = 12
+        this.amplitude = 4
+        this.died_steps = 15
         //
         this.update()
         //
@@ -21,11 +22,11 @@ export default class Fireworks extends Canvas {
     }
 
     update() {
-        this.force = new Vector(this.air, this.gravity)
+        this.force = new Vector(0, this.gravity)
     }
 
     events() {
-        const mouseMove = throttle(() => this.fire(), 15)
+        const mouseMove = throttle(() => this.fire(), THROTTLE)
         document.addEventListener('mousemove', mouseMove, false)
         document.addEventListener('touchmove', mouseMove, false)
         document.addEventListener('keypress', () => this.clear(), false)
@@ -58,7 +59,7 @@ export default class Fireworks extends Canvas {
             if (light.isLived) {
                 light.update(this.force)
                 light.draw(_ctx)
-                _ctx.globalCompositeOperation = "lighter"
+                // _ctx.globalCompositeOperation = "lighter"
             } else this.removeLight(light)
         }
         _ctx.restore()

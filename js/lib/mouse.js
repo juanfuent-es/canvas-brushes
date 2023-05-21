@@ -1,15 +1,17 @@
 const PX_RATIO = Math.min(window.devicePixelRatio, 2)
 import Vector from "../math/vector.js"
 export default class Mouse {
-    constructor() {
+    constructor(_throttle=25) {
+        this.throttle = _throttle
         this.pos = new Vector(window.innerWidth / 2, window.innerHeight / 2)
         this.pressed = false
         this.addEvents()
     }
 
     addEvents() {
-        const mouseMove = throttle(this.update.bind(this), 15)
-        document.addEventListener('pointermove', mouseMove, false)
+        const mouseMove = throttle(this.update.bind(this), this.throttle)
+        document.addEventListener('mousemove', mouseMove, false)
+        document.addEventListener('touchmove', mouseMove, false)
         document.addEventListener('pointerdown', () => {
             this.pressed = true
         }, false)
