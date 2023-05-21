@@ -21,10 +21,10 @@ export default class Airosol {
 
     setMesh() {
         this.aerosol = new Aerosol({
-            radio: 35,
-            amplitude: 3,
-            died_steps: 25,
-            total_psts: 3
+            radio: 50,
+            amplitude: 2,
+            died_steps: 20,
+            total_psts: 2
         })
         // this.aerosol.container.appendChild(this.aerosol.canvas)
         //
@@ -63,7 +63,7 @@ export default class Airosol {
 
     animate() {
         requestAnimationFrame(() => this.animate())
-        this.mesh.material.uniforms.uTime.value = new Date().getTime() * .1
+        this.mesh.material.uniforms.uTime.value = new Date().getTime()
         this.mesh.material.uniforms.uTexture.value.needsUpdate = true
         this.render()
     }

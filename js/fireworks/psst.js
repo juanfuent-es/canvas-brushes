@@ -10,13 +10,13 @@ export default class Light {
         this.diameter = this.radio * 2
         this.amplitude = args.amplitude || 5
         this.half_amp = this.amplitude / 2
-        this.alpha = Math.abs(Math.cos(new Date().getTime() * .0001 + this.radio)* .35)
+        this.alpha = Math.abs(Math.cos(new Date().getTime() * .0001 + this.radio)*.45)
         //
         this.fillStyle = COLORS[~~(Math.random() * COLORS.length)]
         this.amp = Math.random() * this.amplitude
         // forces
         this.pos = new Vector(this.x, this.y)
-        this.acc = new Vector(Math.random() * this.amp - this.half_amp, -Math.random() * 3) // aerosol
+        this.acc = new Vector(Math.random() * this.amp - this.half_amp, -Math.random() * (this.amp*3)) // aerosol
         // this.acc = new Vector(Math.random() * this.amp - (this.amp / 2), -Math.random() * this.amp) // fireworks
         this.vel = new Vector(0, 0)
     }
@@ -33,8 +33,8 @@ export default class Light {
     
     draw(_ctx) {
         _ctx.save()
-        _ctx.beginPath()
         _ctx.globalAlpha = this.alpha
+        _ctx.beginPath()
         _ctx.arc(this.pos.x, this.pos.y, this.radio, 0, PI_2)
         _ctx.closePath()
         _ctx.fillStyle = this.fillStyle

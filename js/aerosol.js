@@ -2,7 +2,7 @@ import Canvas from "./lib/canvas.js"
 import Vector from "./math/vector.js"
 import Mouse from "./lib/mouse.js"
 import Psst from "./fireworks/psst.js"
-const THROTTLE = 20 //ms
+const THROTTLE = 15 //ms
 const POINTER = new Mouse(THROTTLE)
 const COLORS = ["#95F8E8", "#FCA2CF", "#8979F2", "#FAC4B2", "#94CEF2"]
 export default class Aerosol extends Canvas {
