@@ -5,6 +5,11 @@
 	<title>Aerosol | JuanFuent.es</title>
 	<meta name='viewport' content='width=device-width, initial-scale=1.0'>
     <link rel="stylesheet" href="css/main.css">
+	<style>
+		body {
+			/* background: rgb(40, 0, 0); */
+		}
+	</style>
 </head>
 <body>
 	<button id="clean-btn">Press any key to clean</button>
@@ -12,13 +17,18 @@
 	<script src="static/vendor.js"></script>
 	<script type="module">
 		import Aerosol from "./js/aerosol/index.js"
-		const AERO = new Aerosol(10)
+		const AERO = new Aerosol({
+			radio: 42,
+			amplitude: .42,
+			died_steps: 25,
+			total_psts: 3
+		})
 		const gui = new dat.GUI()
 		gui.add(AERO, 'radio', 10, 50).step(1)
-		gui.add(AERO, 'amplitude', 2, 10).step(1)
-		gui.add(AERO, 'gravity', .1, .2).step(.01).onChange(AERO.update.bind(AERO))
-		gui.add(AERO, 'died_steps', 10, 50).step(1)
-		gui.add(AERO, 'total_lights', 5, 30).step(1)
+		gui.add(AERO, 'amplitude', 0, 4).step(.05)
+		gui.add(AERO, 'died_steps', 2, 30).step(1)
+		// gui.add(AERO, 'composite', ["source-over", "source-in", "source-out", "source-atop", "destination-over", "destination-in", "destination-out", "destination-atop", "lighter", "copy", "xor", "multiply", "overlay", "screen", "darken", "lighten", "difference", "exclusion", "hue", "saturation", "color","color-dodge","color-burn", "hard-light", "soft-light", "luminosity"]).onChange(AERO.clear())
+		gui.add(AERO, 'total_psts', 2, 6).step(1)
 	</script>
 </body>
 </html>

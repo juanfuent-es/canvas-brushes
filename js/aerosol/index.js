@@ -2,27 +2,22 @@ import Canvas from "../lib/canvas.js"
 import Vector from "../math/vector.js"
 import Mouse from "../lib/mouse.js"
 import Light from "./../fireworks/light.js"
-const THROTTLE = 15 //ms
+const THROTTLE = 18 //ms
 const POINTER = new Mouse(THROTTLE)
 
 export default class Aerosol extends Canvas {
-    constructor(_lights = 3) {
+    constructor(args = {}) {
         super()
-        this.gravity = .1
-        this.radio = 12
-        this.amplitude = 4
-        this.died_steps = 15
+        this.radio = args.radio || 24
+        this.amplitude = args.amplitude || 4
+        this.died_steps = args.died_steps || 15
+        this.gravity = new Vector(0, 0.1)
         //
-        this.update()
-        //
-        this.total_lights = _lights
-        this.lights = []
+        this.total_psts = args.total_psts || 10 // Yep, noise of aerosol
+        this.pssts = []
+        this.composite = "hard-light"
         this.events()
         this.animate()
-    }
-
-    update() {
-        this.force = new Vector(0, this.gravity)
     }
 
     events() {
@@ -35,15 +30,15 @@ export default class Aerosol extends Canvas {
 
     fire() {
         if (!POINTER.pressed) return false
-        for (let i = 0; i < this.total_lights; i++) {
-            const light = new Light({
+        for (let i = 0; i < this.total_psts; i++) {
+            const pst = new Light({
                 x: POINTER.pos.x,
                 y: POINTER.pos.y,
                 died_steps: this.died_steps,
                 radio: Math.random() * this.radio,
                 amplitude: Math.random() * this.amplitude
             })
-            this.lights.push(light)
+            this.pssts.push(pst)
         }
     }
 
@@ -54,19 +49,19 @@ export default class Aerosol extends Canvas {
 
     render(_ctx) {
         _ctx.save()
-        for (let i = 0; i < this.lights.length; i++) {
-            const light = this.lights[i]
-            if (light.isLived) {
-                light.update(this.force)
-                light.draw(_ctx)
-                // _ctx.globalCompositeOperation = "lighter"
-            } else this.removeLight(light)
+        for (let i = 0; i < this.pssts.length; i++) {
+            const pst = this.pssts[i]
+            if (pst.isLived) {
+                pst.update(this.gravity)
+                pst.draw(_ctx)
+            } else this.removePst(pst)
+            _ctx.globalCompositeOperation = this.composite
         }
         _ctx.restore()
     }
 
-    removeLight(_light) {
-        const index = this.lights.indexOf(_light)
-        this.lights.splice(index, 1)
+    removePst(_pst) {
+        const index = this.pssts.indexOf(_pst)
+        this.pssts.splice(index, 1)
     }
 }
