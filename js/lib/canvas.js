@@ -5,18 +5,21 @@ export default class Canvas {
         else this.container = document.querySelector(containerId)
         this.canvas = document.createElement("canvas")
         this.context = this.canvas.getContext("2d")
-        this.container.appendChild(this.canvas)
         //
         const onResizeHandler = debounce(this.onResize.bind(this), 250)
         window.addEventListener('resize', onResizeHandler, false)
         this.onResize()
     }
 
-    onResize() {
-        this.width = window.innerWidth
-        this.height = window.innerHeight
-        this.canvas.style.width = this.width + "px"
-        this.canvas.style.height = this.height + "px"
+    pixelated() {
+        this.context.webkitImageSmoothingEnabled = false
+        this.context.mozImageSmoothingEnabled = false
+        this.context.msImageSmoothingEnabled = false
+        this.context.imageSmoothingEnabled = false
+    }
+
+    onResize(_width = innerWidth, _height = innerHeight) {
+        [this.width, this.height] = [_width, _height]
         this.canvas.width = this.width * PX_RATIO
         this.canvas.height = this.height * PX_RATIO
         this.center = {

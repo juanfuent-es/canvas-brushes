@@ -8,6 +8,13 @@ const POINTER = new Mouse(THROTTLE)
 export default class Aerosol extends Canvas {
     constructor(args = {}) {
         super()
+        //
+        this.scale = .5
+        this.helper = new Canvas()
+        this.container.appendChild(this.helper.canvas)
+        this.scaleHelper(this.scale)
+        this.pixelated()
+
         this.radio = args.radio || 24
         this.amplitude = args.amplitude || 4
         this.died_steps = args.died_steps || 15
@@ -21,14 +28,14 @@ export default class Aerosol extends Canvas {
     }
 
     events() {
-        const mouseMove = throttle(() => this.fire(), THROTTLE)
+        const mouseMove = throttle(() => this.pssssst(), THROTTLE)
         document.addEventListener('mousemove', mouseMove, false)
         document.addEventListener('touchmove', mouseMove, false)
         document.addEventListener('keypress', () => this.clear(), false)
         document.querySelector("#clean-btn").addEventListener('click', () => this.clear(), false)
     }
 
-    fire() {
+    pssssst() {
         if (!POINTER.pressed) return false
         for (let i = 0; i < this.total_psts; i++) {
             const pst = new Light({
@@ -45,6 +52,7 @@ export default class Aerosol extends Canvas {
     animate() {
         requestAnimationFrame(() => this.animate())
         this.render(this.context)
+        this.pixelize(this.helper.context)
     }
 
     render(_ctx) {
@@ -58,6 +66,18 @@ export default class Aerosol extends Canvas {
             _ctx.globalCompositeOperation = this.composite
         }
         _ctx.restore()
+    }
+
+    scaleHelper(_scale = .1) {
+        this.scale = _scale
+        let _width = ~~(window.innerWidth * this.scale)
+        let _height = ~~(window.innerHeight * this.scale)
+        this.helper.onResize(_width, _height)
+    }
+
+    pixelize(_ctx) {
+        this.helper.clear()
+        _ctx.drawImage(this.canvas, 0, 0, this.helper.width, this.helper.height)
     }
 
     removePst(_pst) {

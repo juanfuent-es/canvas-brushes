@@ -6,6 +6,7 @@ const POINTER = new Mouse()
 export default class Fireworks extends Canvas {
     constructor(_lights = 3) {
         super()
+        this.container.appendChild(this.canvas)
         this.air = 0
         this.gravity = .1
         this.radio = 3

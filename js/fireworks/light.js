@@ -10,6 +10,7 @@ export default class Light {
         this.amplitude = args.amplitude || 5
         this.half_amp = this.amplitude / 2
         //
+        // this.setWhites()
         this.setColors()
         this.amp = Math.random() * this.amplitude
         // forces
@@ -19,11 +20,21 @@ export default class Light {
         this.vel = new Vector(0, 0)
     }
 
+    setWhites() {
+        const random = ~~(Math.random()*100) + 100
+        this.r = random
+        this.g = random
+        this.b = random
+        this.alpha = Math.random() * .65
+    }
+
     setColors() {
+        let time = new Date().getTime() * .0001
+        this.alpha = Math.abs(Math.sin(time) * .4) + .1
+        // this.alpha = Math.random() * .45
         this.r = 255
         this.g = 255
         this.b = 0
-        this.alpha = Math.random() * .35
         const random = Math.random()
         if (random > .66) {
             this.r = this.channel()
