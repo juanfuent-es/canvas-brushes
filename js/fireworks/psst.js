@@ -11,12 +11,12 @@ export default class Light {
         this.amplitude = args.amplitude || 5
         this.half_amp = this.amplitude / 2
         //
+        this.setWhites()
         this.setColors()
-        // this.setWhites()
         this.amp = Math.random() * this.amplitude
         // forces
         this.pos = new Vector(this.x, this.y)
-        this.acc = new Vector(Math.random() * this.amp - this.half_amp, -Math.random() * 4) // aerosol
+        this.acc = new Vector(Math.random() * this.amp - this.half_amp, -Math.random() * 3) // aerosol
         // this.acc = new Vector(Math.random() * this.amp - (this.amp / 2), -Math.random() * this.amp) // fireworks
         this.vel = new Vector(0, 0)
     }

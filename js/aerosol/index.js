@@ -2,7 +2,7 @@ import Canvas from "../lib/canvas.js"
 import Vector from "../math/vector.js"
 import Mouse from "../lib/mouse.js"
 import Psst from "./../fireworks/psst.js"
-const THROTTLE = 18 //ms
+const THROTTLE = 20 //ms
 const POINTER = new Mouse(THROTTLE)
 
 export default class Aerosol extends Canvas {
@@ -12,7 +12,7 @@ export default class Aerosol extends Canvas {
         // this.scale = 1
         // this.helper = new Canvas()
         // this.pixelated()
-        this.radio = args.radio || 24
+        this.radio = args.radio || 50
         this.amplitude = args.amplitude || 4
         this.died_steps = args.died_steps || 15
         this.gravity = new Vector(0, 0.1)
@@ -22,7 +22,6 @@ export default class Aerosol extends Canvas {
         this.composite = "hard-light"
         this.mouseEvents()
         this.animate()
-        // this.onResize()
     }
 
     // onResize() {
@@ -75,10 +74,10 @@ export default class Aerosol extends Canvas {
         _ctx.restore()
     }
 
-    pixelize(_ctx) {
-        this.helper.clear()
-        _ctx.drawImage(this.canvas, 0, 0, this.helper.width, this.helper.height)
-    }
+    // pixelize(_ctx) {
+    //     this.helper.clear()
+    //     _ctx.drawImage(this.canvas, 0, 0, this.helper.width, this.helper.height)
+    // }
 
     removePst(_pst) {
         const index = this.pssts.indexOf(_pst)
