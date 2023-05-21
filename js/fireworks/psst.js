@@ -7,30 +7,32 @@ export default class Light {
         this.y = args.y || innerHeight / 2
         this.died_steps = args.died_steps || 10
         this.radio = args.radio || Math.random()
+        this.diameter = this.radio * 2
         this.amplitude = args.amplitude || 5
         this.half_amp = this.amplitude / 2
         //
-        // this.setWhites()
         this.setColors()
+        // this.setWhites()
         this.amp = Math.random() * this.amplitude
         // forces
         this.pos = new Vector(this.x, this.y)
-        this.acc = new Vector(Math.random() * this.amp - this.half_amp, -Math.random() * 3) // aerosol
+        this.acc = new Vector(Math.random() * this.amp - this.half_amp, -Math.random() * 4) // aerosol
         // this.acc = new Vector(Math.random() * this.amp - (this.amp / 2), -Math.random() * this.amp) // fireworks
         this.vel = new Vector(0, 0)
     }
 
     setWhites() {
-        const random = ~~(Math.random()*100) + 100
+        let time = new Date().getTime() * .001
+        const random = ~~(Math.random() * 155) + 100
         this.r = random
         this.g = random
         this.b = random
-        this.alpha = Math.random() * .65
+        this.alpha = Math.abs(Math.cos(time) * .35) + .1
     }
 
     setColors() {
-        let time = new Date().getTime() * .0001
-        this.alpha = Math.abs(Math.tan(time) * .4) + .1
+        let time = new Date().getTime() * .00001
+        this.alpha = Math.abs(Math.cos(time + this.radio)* .35)
         // this.alpha = Math.random() * .45
         this.r = 255
         this.g = 255
@@ -60,9 +62,8 @@ export default class Light {
         //
         this.radio -= (this.radio / this.died_steps)
         this.alpha -= (this.alpha / this.died_steps)
-        // this.radio -= .035
     }
-
+    
     draw(_ctx) {
         _ctx.save()
         _ctx.beginPath()

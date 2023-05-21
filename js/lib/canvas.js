@@ -6,6 +6,10 @@ export default class Canvas {
         this.canvas = document.createElement("canvas")
         this.context = this.canvas.getContext("2d")
         //
+        this.events()
+    }
+
+    events() {
         const onResizeHandler = debounce(this.onResize.bind(this), 250)
         window.addEventListener('resize', onResizeHandler, false)
         this.onResize()
@@ -19,6 +23,10 @@ export default class Canvas {
     }
 
     onResize(_width = innerWidth, _height = innerHeight) {
+        this.setSize(_width, _height)
+    }
+
+    setSize(_width = innerWidth, _height = innerHeight) {
         [this.width, this.height] = [_width, _height]
         this.canvas.width = this.width * PX_RATIO
         this.canvas.height = this.height * PX_RATIO

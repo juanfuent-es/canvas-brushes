@@ -1,20 +1,17 @@
 import Canvas from "../lib/canvas.js"
 import Vector from "../math/vector.js"
 import Mouse from "../lib/mouse.js"
-import Light from "./../fireworks/light.js"
+import Psst from "./../fireworks/psst.js"
 const THROTTLE = 18 //ms
 const POINTER = new Mouse(THROTTLE)
 
 export default class Aerosol extends Canvas {
     constructor(args = {}) {
         super()
-        //
-        this.scale = .5
-        this.helper = new Canvas()
-        this.container.appendChild(this.helper.canvas)
-        this.scaleHelper(this.scale)
-        this.pixelated()
-
+        this.container.appendChild(this.canvas)
+        // this.scale = 1
+        // this.helper = new Canvas()
+        // this.pixelated()
         this.radio = args.radio || 24
         this.amplitude = args.amplitude || 4
         this.died_steps = args.died_steps || 15
@@ -23,11 +20,21 @@ export default class Aerosol extends Canvas {
         this.total_psts = args.total_psts || 10 // Yep, noise of aerosol
         this.pssts = []
         this.composite = "hard-light"
-        this.events()
+        this.mouseEvents()
         this.animate()
+        // this.onResize()
     }
 
-    events() {
+    // onResize() {
+    //     this.setSize()
+    //     if (this.helper) {
+    //         let _width = ~~(window.innerWidth * this.scale)
+    //         let _height = ~~(window.innerHeight * this.scale)
+    //         this.helper.setSize(_width, _height)
+    //     }
+    // }
+
+    mouseEvents() {
         const mouseMove = throttle(() => this.pssssst(), THROTTLE)
         document.addEventListener('mousemove', mouseMove, false)
         document.addEventListener('touchmove', mouseMove, false)
@@ -38,7 +45,7 @@ export default class Aerosol extends Canvas {
     pssssst() {
         if (!POINTER.pressed) return false
         for (let i = 0; i < this.total_psts; i++) {
-            const pst = new Light({
+            const pst = new Psst({
                 x: POINTER.pos.x,
                 y: POINTER.pos.y,
                 died_steps: this.died_steps,
@@ -52,7 +59,7 @@ export default class Aerosol extends Canvas {
     animate() {
         requestAnimationFrame(() => this.animate())
         this.render(this.context)
-        this.pixelize(this.helper.context)
+        // this.pixelize(this.helper.context)
     }
 
     render(_ctx) {
@@ -66,13 +73,6 @@ export default class Aerosol extends Canvas {
             _ctx.globalCompositeOperation = this.composite
         }
         _ctx.restore()
-    }
-
-    scaleHelper(_scale = .1) {
-        this.scale = _scale
-        let _width = ~~(window.innerWidth * this.scale)
-        let _height = ~~(window.innerHeight * this.scale)
-        this.helper.onResize(_width, _height)
     }
 
     pixelize(_ctx) {
