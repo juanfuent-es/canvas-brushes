@@ -5,21 +5,14 @@ const PX_RATIO = Math.min(window.devicePixelRatio, 1)
 
 export default class Airosol {
     constructor() {
-        this.aerosol = new Aerosol({
-            radio: 35,
-            amplitude: .42,
-            died_steps: 25,
-            total_psts: 3
-        })
-        this.aerosol.container.appendChild(this.aerosol.canvas)
         this.scene = new THREE.Scene()
         this.camera = new THREE.OrthographicCamera( - 1, 1, 1, - 1, 0, 1 )
-        this.setMesh()
         this.setRenderer()
+        this.setMesh()
         this.events()
         this.animate()
     }
-
+    
     events() {
         const onResizeHandler = debounce(() => this.resize(), 250)
         window.addEventListener('resize', onResizeHandler, false)
@@ -27,6 +20,14 @@ export default class Airosol {
     }
 
     setMesh() {
+        this.aerosol = new Aerosol({
+            radio: 35,
+            amplitude: 3,
+            died_steps: 25,
+            total_psts: 3
+        })
+        this.aerosol.container.appendChild(this.aerosol.canvas)
+        //
         this.texture = new THREE.Texture(this.aerosol.canvas)
         this.material = new THREE.ShaderMaterial({
             vertexShader: document.getElementById( 'vertexShader' ).textContent,
@@ -56,19 +57,20 @@ export default class Airosol {
 
     resize() {
         this.aerosol.onResize()
-        this.aerosol.bg("#000")
+        this.aerosol.bg(this.aerosol.fillColor)
         this.renderer.setSize(this.width, this.height)
     }
 
     animate() {
         requestAnimationFrame(() => this.animate())
+        this.mesh.material.uniforms.uTime.value = new Date().getTime() * .1
+        this.mesh.material.uniforms.uTexture.value.needsUpdate = true
         this.render()
     }
 
     render() {
         this.renderer.render(this.scene, this.camera)
         this.aerosol.render(this.aerosol.context)
-        this.mesh.material.uniforms.uTexture.value.needsUpdate = true
     }
 
     get width() {

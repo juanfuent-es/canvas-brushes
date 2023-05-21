@@ -4,13 +4,11 @@ import Mouse from "./lib/mouse.js"
 import Psst from "./fireworks/psst.js"
 const THROTTLE = 20 //ms
 const POINTER = new Mouse(THROTTLE)
-
+const COLORS = ["#95F8E8", "#FCA2CF", "#8979F2", "#FAC4B2", "#94CEF2"]
 export default class Aerosol extends Canvas {
     constructor(args = {}) {
         super()
-        // this.scale = 1
-        // this.helper = new Canvas()
-        // this.pixelated()
+        this.fillColor = COLORS[~~(Math.random() * COLORS.length)]
         this.radio = args.radio || 50
         this.amplitude = args.amplitude || 4
         this.died_steps = args.died_steps || 15
@@ -18,25 +16,17 @@ export default class Aerosol extends Canvas {
         //
         this.total_psts = args.total_psts || 10 // Yep, noise of aerosol
         this.pssts = []
-        this.composite = "hard-light"
-        this.mouseEvents()
+        this.composite = "source-atop" //hard-light, soft-light
+        this.events()
     }
-
-    // onResize() {
-    //     this.setSize()
-    //     if (this.helper) {
-    //         let _width = ~~(window.innerWidth * this.scale)
-    //         let _height = ~~(window.innerHeight * this.scale)
-    //         this.helper.setSize(_width, _height)
-    //     }
-    // }
-
-    mouseEvents() {
+    
+    events() {
         const mouseMove = throttle(() => this.pssssst(), THROTTLE)
         document.addEventListener('mousemove', mouseMove, false)
         document.addEventListener('touchmove', mouseMove, false)
-        document.addEventListener('keypress', () => this.clear(), false)
-        document.querySelector("#clean-btn").addEventListener('click', () => this.clear(), false)
+        // clean
+        document.addEventListener('keypress', () => this.bg(this.fillColor), false)
+        document.querySelector("#clean-btn").addEventListener('click', () => this.bg(this.fillColor), false)
     }
 
     pssssst() {
@@ -56,7 +46,6 @@ export default class Aerosol extends Canvas {
     animate() {
         requestAnimationFrame(() => this.animate())
         this.render(this.context)
-        // this.pixelize(this.helper.context)
     }
 
     render(_ctx) {
@@ -71,11 +60,6 @@ export default class Aerosol extends Canvas {
         }
         _ctx.restore()
     }
-
-    // pixelize(_ctx) {
-    //     this.helper.clear()
-    //     _ctx.drawImage(this.canvas, 0, 0, this.helper.width, this.helper.height)
-    // }
 
     removePst(_pst) {
         const index = this.pssts.indexOf(_pst)

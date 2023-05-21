@@ -17,35 +17,37 @@
 		varying vec2 vUv;
 		void main() {
 			vUv = uv;
-			gl_Position = vec4( position, 1.0 );
+		
+			vec4 pos = modelViewMatrix * vec4( position, 1.0 );
+			gl_Position = projectionMatrix * pos;
 		}
 	</script>
 	<script id="fragmentShader" type="x-shader/x-fragment">
 		varying vec2 vUv;
 		uniform sampler2D uTexture;
+		uniform float uTime;
 		void main() {
-			gl_FragColor = texture2D(uTexture, vUv);
+			vec3 color = texture2D(uTexture, vUv).rgb;
+			vec3 iris = vec3(
+				abs(sin(vUv.x * color.r * (uTime/2.))),
+				abs(cos(vUv.y * color.g * (uTime/3.))),
+				abs(sin(vUv.x * vUv.y * color.b))
+			);
+			gl_FragColor = vec4(color, 1.);
+			//gl_FragColor = vec4(iris * color, 1.);
 		}
 	</script>
-	<!-- uniform sampler2D uTexture;
-	uniform float uTime;
-	varying vec2 vUv;
-	
-	void main() {
-		vec2 pos = vUv;
-		float r = abs(sin( pos.x + uTime));
-		float g = abs(cos( pos.y + uTime));
-		float b = abs(sin( pos.x - uTime));
-		gl_FragColor = texture2D(uTexture, vUv);
-	} -->
-	<!-- float alpha = texture2D(uTexture, pos).a;
-	if (alpha < .01) discard;
-	gl_FragColor = vec4(r, g, b, alpha); -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.7.5/dat.gui.min.js"></script>
 	<script src="static/vendor.js"></script>
 	<script type="module">
         import Airosol  from "./js/airosol.js"
         const AIRO = new Airosol()
+		const gui = new dat.GUI()
+		gui.add(AIRO.aerosol, 'radio', 10, 50).step(1)
+		gui.add(AIRO.aerosol, 'amplitude', 0, 4).step(.05)
+		gui.add(AIRO.aerosol, 'died_steps', 2, 30).step(1)
+		gui.add(AIRO.aerosol, 'composite', ["source-over", "source-in", "source-out", "source-atop", "destination-over", "destination-in", "destination-out", "destination-atop", "lighter", "copy", "xor", "multiply", "overlay", "screen", "darken", "lighten", "difference", "exclusion", "hue", "saturation", "color","color-dodge","color-burn", "hard-light", "soft-light", "luminosity"]).onChange(AIRO.aerosol.clear())
+		gui.add(AIRO.aerosol, 'total_psts', 2, 6).step(1)
     </script>
 </body>
 </html>
