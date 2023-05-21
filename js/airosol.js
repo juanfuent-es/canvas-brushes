@@ -26,7 +26,7 @@ export default class Airosol {
             died_steps: 25,
             total_psts: 3
         })
-        this.aerosol.container.appendChild(this.aerosol.canvas)
+        // this.aerosol.container.appendChild(this.aerosol.canvas)
         //
         this.texture = new THREE.Texture(this.aerosol.canvas)
         this.material = new THREE.ShaderMaterial({
