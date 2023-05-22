@@ -25,8 +25,8 @@ export default class Aerosol extends Canvas {
         document.addEventListener('mousemove', mouseMove, false)
         document.addEventListener('touchmove', mouseMove, false)
         // clean
-        document.addEventListener('keypress', () => this.bg(this.fillColor), false)
-        document.querySelector("#clean-btn").addEventListener('click', () => this.bg(this.fillColor), false)
+        document.addEventListener('keypress', () => this.clear(), false)
+        document.querySelector("#clean-btn").addEventListener('click', () => this.clear(), false)
     }
 
     pssssst() {
@@ -46,6 +46,11 @@ export default class Aerosol extends Canvas {
     animate() {
         requestAnimationFrame(() => this.animate())
         this.render(this.context)
+    }
+
+    clear() {
+        this.fillColor = COLORS[~~(Math.random() * COLORS.length)]
+        this.bg(this.fillColor)
     }
 
     render(_ctx) {

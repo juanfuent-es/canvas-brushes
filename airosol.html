@@ -8,9 +8,9 @@
 	<style>
 		button {
 			background: rgb(40, 0, 0);
-		}
-		button {
-			opacity: 0;
+			left: 1em;
+			bottom: 1em;
+			transform: none;
 		}
 	</style>
 </head>
@@ -33,7 +33,7 @@
 			vec3 color = texture2D(uTexture, vUv).rgb;
 			vec3 iris = vec3(
 				abs(sin(vUv.x + time * color.r * 5.)),
-				abs(cos(vUv.y - time * color.g * 7.)),
+				abs(cos(vUv.y - time * color.g * 10.)),
 				abs(sin(vUv.x + time * color.b * 5.))
 			);
 			gl_FragColor = vec4((iris * color), 1.);
@@ -43,7 +43,12 @@
 	<script src="static/vendor.js"></script>
 	<script type="module">
         import Airosol  from "./js/airosol.js"
-        const AIRO = new Airosol()
+        const AERO_IRIS = new Airosol()
+		const gui = new dat.GUI()
+		gui.add(AERO_IRIS.aerosol, 'radio', 10, 50).step(1)
+		gui.add(AERO_IRIS.aerosol, 'amplitude', 0, 4).step(.05)
+		gui.add(AERO_IRIS.aerosol, 'died_steps', 2, 30).step(1)
+		gui.add(AERO_IRIS.aerosol, 'total_psts', 2, 6).step(1)
     </script>
 </body>
 </html>
